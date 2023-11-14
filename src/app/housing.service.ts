@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HousingLocation } from './interfaces/housing.interface';
 
 @Injectable({
@@ -110,10 +110,18 @@ export class HousingService {
     }
   ]
 
-  constructor() { }
+  #housingLocationList = signal<HousingLocation[]>([])
+
+  constructor() { 
+    this.#housingLocationList.set(this.housingLocationList);
+  }
 
   get allHousingLocations(): HousingLocation[] {
     return this.housingLocationList;
+  }
+
+  getAllHousingLocations(): HousingLocation[] {
+    return this.#housingLocationList();
   }
 
   getHousingLocationById(id: number): HousingLocation | undefined {
